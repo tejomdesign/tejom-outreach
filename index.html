@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Tejom Designs — Outreach</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--accent:#2563eb;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--text:#e6edf3;--muted:#8b949e}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff}
+header h1{font-size:17px;font-weight:700}
+.container{max-width:1100px;margin:0 auto;padding:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+h2{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;margin-top:10px}
+input,textarea,select{width:100%;background:#0d1117;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.col{flex:1;min-width:160px}
+.btn{padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#1d4ed8}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#16a34a}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:#2563eb;color:#60a5fa}
+.btn-red{background:var(--red);color:#fff}
+.btn-sm{padding:5px 11px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 12px;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border)}
+td{padding:9px 12px;border-bottom:1px solid #21262d;vertical-align:middle}
+tr:hover td{background:#1c2128}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.b-pending{background:#27272a;color:#a1a1aa}
+.b-sent{background:#14532d;color:#86efac}
+.b-failed{background:#450a0a;color:#fca5a5}
+.b-live{background:#14532d;color:#86efac}
+.b-db{background:#1e3a5f;color:#93c5fd}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 18px;flex:1;min-width:110px}
+.stat .n{font-size:24px;font-weight:700}.stat .l{font-size:11px;color:var(--muted);margin-top:2px}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;display:none;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+#toast.err{background:var(--red)}
+.tag{background:#1e3a5f;color:#93c5fd;padding:2px 7px;border-radius:4px;font-size:11px;font-family:monospace}
+.progress{height:5px;background:#21262d;border-radius:4px;overflow:hidden;margin-top:10px}
+.progress-bar{height:100%;background:var(--accent);border-radius:4px;transition:width .3s;width:0%}
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:20px;overflow-x:auto}
+.tab{padding:8px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;transition:.2s}
+.tab.on{color:var(--text);border-bottom-color:var(--accent)}
+.panel{display:none}.panel.on{display:block}
+.api-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:14px}
+.api-ok{background:#14532d;border:1px solid #166534;color:#86efac}
+.api-warn{background:#1c1c00;border:1px solid #713f12;color:#fde047}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+.step{display:flex;gap:10px;margin-bottom:12px}
+.sn{background:var(--accent);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.step p{font-size:13px;color:var(--muted);line-height:1.6}.step p b{color:var(--text)}
+.script-box{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:'Courier New',monospace;font-size:11px;color:#7ee787;overflow:auto;white-space:pre;max-height:300px}
+.info-box{background:#0a1929;border:1px solid #1e3a5f;border-radius:8px;padding:12px 14px;font-size:12px;color:#93c5fd;margin-bottom:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">T</div>
+  <div><h1>Tejom Designs — Outreach Platform</h1></div>
+  <div style="margin-left:auto;font-size:12px;color:var(--muted)" id="api-indicator">⚪ No API key</div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab on" onclick="tab('search')">🔍 Find Companies</div>
+    <div class="tab" onclick="tab('contacts')">📋 Contacts</div>
+    <div class="tab" onclick="tab('template')">✉️ Template</div>
+    <div class="tab" onclick="tab('setup')">⚙️ Setup</div>
+  </div>
+
+  <!-- FIND COMPANIES -->
+  <div class="panel on" id="p-search">
+    <div class="card">
+      <h2>🔍 Find Target Companies — Live Google Search</h2>
+      <div id="api-bar" class="api-status api-warn">
+        <div class="dot"></div>
+        <span id="api-bar-msg">No Google API key. Using built-in database. Add key in ⚙️ Setup for live results.</span>
+      </div>
+      <div class="row">
+        <div class="col" style="flex:2">
+          <label>What companies are you looking for?</label>
+          <input id="s-q" placeholder="e.g. EV startups India, robotics companies Pune, product design firms USA"/>
+        </div>
+        <div class="col">
+          <label>Industry</label>
+          <select id="s-ind">
+            <option value="">Any Industry</option>
+            <option>EV & Automotive</option>
+            <option>Manufacturing</option>
+            <option>Aerospace & Defense</option>
+            <option>Robotics & Automation</option>
+            <option>Electronics & IoT</option>
+            <option>Medical Devices</option>
+            <option>Consumer Products</option>
+            <option>Startups & R&D</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Region</label>
+          <select id="s-reg">
+            <option>India</option>
+            <option>Mumbai</option>
+            <option>Pune</option>
+            <option>Bangalore</option>
+            <option>Delhi NCR</option>
+            <option>Global</option>
+            <option>USA</option>
+            <option>Europe</option>
+            <option>Middle East</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Results</label>
+          <select id="s-cnt">
+            <option value="10">10</option>
+            <option value="15" selected>15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="doSearch()">🔍 Search Companies</button>
+        <button class="btn btn-outline" onclick="selAll()">☑️ Select All</button>
+        <button class="btn btn-green" onclick="sendToSheet()">📤 Send to Google Sheet</button>
+        <button class="btn btn-outline" onclick="addToDash()">➕ Add to Contacts</button>
+      </div>
+      <div id="s-loading" style="display:none;margin-top:12px">
+        <p id="s-msg" style="font-size:13px;color:var(--muted)">Searching...</p>
+        <div class="progress"><div class="progress-bar" id="s-bar"></div></div>
+      </div>
+    </div>
+
+    <div id="s-results" style="display:none">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <h2 style="margin:0">Results <span id="s-found" style="color:var(--muted);font-weight:400;font-size:13px"></span></h2>
+          <span id="s-src-badge" class="badge"></span>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr>
+              <th><input type="checkbox" id="chk-all" onchange="toggleAll(this)"/></th>
+              <th>Company</th><th>Email</th><th>Industry</th><th>Region</th><th>Website</th>
+            </tr></thead>
+            <tbody id="s-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="panel" id="p-contacts">
+    <div class="stats">
+      <div class="stat"><div class="n" style="color:#60a5fa" id="st-t">0</div><div class="l">Total</div></div>
+      <div class="stat"><div class="n" style="color:var(--green)" id="st-s">0</div><div class="l">Sent</div></div>
+      <div class="stat"><div class="n" style="color:var(--yellow)" id="st-p">0</div><div class="l">Pending</div></div>
+      <div class="stat"><div class="n" style="color:var(--red)" id="st-f">0</div><div class="l">Failed</div></div>
+    </div>
+    <div class="card">
+      <h2>➕ Add Manually</h2>
+      <div class="row">
+        <div class="col"><input id="c-n" placeholder="Company Name"/></div>
+        <div class="col"><input id="c-e" placeholder="Email"/></div>
+        <div class="col"><input id="c-i" placeholder="Industry"/></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn btn-primary" onclick="addManual()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <h2 style="margin:0">📋 All Contacts</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 Export CSV</button>
+          <button class="btn btn-green btn-sm" onclick="pushPending()">📤 Push Pending to Sheet</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Company</th><th>Email</th><th>Industry</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="c-table"><tr><td colspan="5" class="empty">No contacts yet.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEMPLATE -->
+  <div class="panel" id="p-template">
+    <div class="card">
+      <h2>✉️ Email Template</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">Use <span class="tag">{{company}}</span> — replaced automatically with each company name.</p>
+      <label>Subject Line</label>
+      <input id="t-sub" value="Engineering Design Partnership — {{company}}"/>
+      <label>Email Body</label>
+      <textarea id="t-body" style="min-height:260px"></textarea>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="saveTpl()">💾 Save</button>
+        <button class="btn btn-outline" onclick="previewTpl()">👁️ Preview</button>
+        <button class="btn btn-outline" onclick="resetTpl()">↩️ Reset</button>
+      </div>
+    </div>
+    <div class="card" id="prev-card" style="display:none">
+      <h2>👁️ Preview</h2>
+      <div id="prev-body" style="font-size:13px;line-height:1.8;color:var(--muted)"></div>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div class="panel" id="p-setup">
+
+    <div class="card">
+      <h2>🔑 API Keys & Connection</h2>
+      <div class="info-box">💡 All fields are saved in your browser. You only need to fill these once.</div>
+
+      <label>🔴 Google API Key <span style="color:var(--green);font-size:11px">(Free — 100 searches/day forever)</span></label>
+      <input id="cfg-gkey" placeholder="AIzaSy..." type="password"/>
+
+      <label>🔵 Google Search Engine ID <span style="color:var(--muted);font-size:11px">(From cse.google.com)</span></label>
+      <input id="cfg-gcx" placeholder="a1b2c3d4e5f6g7h8i"/>
+
+      <label>🟢 Google Apps Script Web App URL <span style="color:var(--muted);font-size:11px">(Connects to your Google Sheet)</span></label>
+      <input id="cfg-url" placeholder="https://script.google.com/macros/s/YOUR_ID/exec"/>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="saveCfg()">💾 Save All</button>
+        <button class="btn btn-outline" onclick="testSheet()">🧪 Test Sheet</button>
+        <button class="btn btn-outline" onclick="testGoogle()">🧪 Test Google Search</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔑 Step 1 — Get Google API Key (Free)</h2>
+      <div class="step"><div class="sn">1</div><p>Go to <b>console.cloud.google.com</b> → sign in with your Gmail</p></div>
+      <div class="step"><div class="sn">2</div><p>Click <b>Select a Project → New Project</b> → name it <b>tejom-search</b> → Create</p></div>
+      <div class="step"><div class="sn">3</div><p>Click <b>APIs & Services → Library</b> → search <b>Custom Search API</b> → Click it → Click <b>Enable</b></p></div>
+      <div class="step"><div class="sn">4</div><p>Go to <b>APIs & Services → Credentials → + Create Credentials → API Key</b></p></div>
+      <div class="step"><div class="sn">5</div><p>Copy the key → paste it in <b>Google API Key</b> field above</p></div>
+    </div>
+
+    <div class="card">
+      <h2>🔵 Step 2 — Get Search Engine ID (Free)</h2>
+      <div class="step"><div class="sn">1</div><p>Go to <b>cse.google.com</b> (Programmable Search Engine)</p></div>
+      <div class="step"><div class="sn">2</div><p>Click <b>Add</b> → In "Sites to search" type <b>*.com</b> → Give it any name like <b>tejom</b></p></div>
+      <div class="step"><div class="sn">3</div><p>Click <b>Create</b> → then click <b>Customize</b></p></div>
+      <div class="step"><div class="sn">4</div><p>Turn ON <b>"Search the entire web"</b> toggle</p></div>
+      <div class="step"><div class="sn">5</div><p>Copy the <b>Search Engine ID</b> → paste in <b>Google Search Engine ID</b> field above</p></div>
+    </div>
+
+    <div class="card">
+      <h2>📜 Step 3 — Google Apps Script</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Paste this in your Google Sheet → Extensions → Apps Script</p>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+        <button class="btn btn-outline btn-sm" onclick="copyScript()">📋 Copy Script</button>
+      </div>
+      <div class="script-box" id="script-box"></div>
+    </div>
+
+    <div class="card">
+      <h2>🌐 Step 4 — Deploy Apps Script as Web App</h2>
+      <div class="step"><div class="sn">1</div><p>In Apps Script → click <b>Deploy → New Deployment</b></p></div>
+      <div class="step"><div class="sn">2</div><p>Click ⚙️ gear → select <b>Web App</b></p></div>
+      <div class="step"><div class="sn">3</div><p>Execute as: <b>Me</b> | Who has access: <b>Anyone</b> → Click <b>Deploy</b></p></div>
+      <div class="step"><div class="sn">4</div><p>Authorize → Copy the <b>Web App URL</b> → paste above → Save All</p></div>
+    </div>
+
+    <div class="card">
+      <h2>🌐 Step 5 — Host Free on GitHub Pages</h2>
+      <div class="step"><div class="sn">1</div><p>Go to <b>github.com</b> → Sign up free</p></div>
+      <div class="step"><div class="sn">2</div><p>Click <b>+ New Repository</b> → name: <b>tejom-outreach</b> → Public → Create</p></div>
+      <div class="step"><div class="sn">3</div><p>Click <b>Add file → Create new file</b> → name it <b>index.html</b> → paste this site's full code</p></div>
+      <div class="step"><div class="sn">4</div><p>Click <b>Commit changes</b> → Go to <b>Settings → Pages → main → Save</b></p></div>
+      <div class="step"><div class="sn">5</div><p>Live at: <b style="color:#60a5fa">https://YOUR-USERNAME.github.io/tejom-outreach</b></p></div>
+    </div>
+
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let contacts = JSON.parse(localStorage.getItem('tj4_c')||'[]');
+let tpl = JSON.parse(localStorage.getItem('tj4_t')||'null');
+let cfg = JSON.parse(localStorage.getItem('tj4_cfg')||'{}');
+let found = [];
+
+const DSUB = "Engineering Design Partnership — {{company}}";
+const DBODY = `Hi {{company}} Team,
+
+I hope this message finds you well.
+
+We are Tejom Designs — a team of Mechanical, Electronics & Computer Engineers based in Mumbai, offering end-to-end engineering solutions for startups, manufacturers, and product companies.
+
+Our Services:
+• CAD Modeling — Part modeling, assembly, surface & sheet metal
+• Product Development — Concept design, prototyping, DFM
+• Drafting — Manufacturing drawings & Bill of Materials
+• Circuit Design — PCB design, schematics, system architecture
+
+Tools: SolidWorks, Creo, Fusion 360, ANSYS, AutoCAD, Altium & more.
+
+We'd love to explore how we can support {{company}}'s engineering needs. Our portfolio is attached for reference.
+
+Fiverr: https://www.fiverr.com/sellers/tejom_design/
+LinkedIn: https://www.linkedin.com/in/tejom-designs-656209409/
+
+Looking forward to connecting!
+
+Warm regards,
+Tejom Designs
+tejomdesign@gmail.com`;
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.onload = () => {
+  if(!tpl) tpl={sub:DSUB,body:DBODY};
+  document.getElementById('t-sub').value = tpl.sub;
+  document.getElementById('t-body').value = tpl.body;
+  if(cfg.gkey) document.getElementById('cfg-gkey').value = cfg.gkey;
+  if(cfg.gcx)  document.getElementById('cfg-gcx').value  = cfg.gcx;
+  if(cfg.url)  document.getElementById('cfg-url').value  = cfg.url;
+  updateApiBar(); renderContacts(); buildScript();
+};
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function tab(t){
+  const keys=['search','contacts','template','setup'];
+  document.querySelectorAll('.tab').forEach((e,i)=>e.classList.toggle('on',keys[i]===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+t).classList.add('on');
+}
+
+// ── API STATUS ────────────────────────────────────────────────────────────────
+function updateApiBar(){
+  const bar=document.getElementById('api-bar');
+  const msg=document.getElementById('api-bar-msg');
+  const ind=document.getElementById('api-indicator');
+  if(cfg.gkey && cfg.gcx){
+    bar.className='api-status api-ok';
+    msg.textContent='✅ Google Custom Search connected — Live web search active! 100 searches/day free forever.';
+    ind.textContent='🟢 Google Search ON';
+  } else {
+    bar.className='api-status api-warn';
+    msg.textContent='⚠️ No Google API key. Using built-in database. Add keys in ⚙️ Setup for real-time Google results.';
+    ind.textContent='⚪ Database Mode';
+  }
+}
+
+// ── BUILT-IN DATABASE (fallback) ──────────────────────────────────────────────
+const DB = {
+  "EV & Automotive":{
+    India:[
+      {name:"Ather Energy",email:"partnerships@atherenergy.com",industry:"EV & Automotive",region:"Bangalore",website:"atherenergy.com"},
+      {name:"Ola Electric",email:"business@olaelectric.com",industry:"EV & Automotive",region:"Bangalore",website:"olaelectric.com"},
+      {name:"Euler Motors",email:"info@eulermotors.com",industry:"EV & Automotive",region:"Delhi",website:"eulermotors.com"},
+      {name:"Revolt Motors",email:"contact@revoltmotors.in",industry:"EV & Automotive",region:"Pune",website:"revoltmotors.in"},
+      {name:"Exponent Energy",email:"hello@exponent.energy",industry:"EV & Automotive",region:"Bangalore",website:"exponent.energy"},
+      {name:"Magenta Mobility",email:"info@magentamobility.com",industry:"EV & Automotive",region:"Mumbai",website:"magentamobility.com"},
+      {name:"Log9 Materials",email:"info@log9materials.com",industry:"EV & Automotive",region:"Bangalore",website:"log9materials.com"},
+      {name:"Greaves Electric",email:"info@greavescotton.com",industry:"EV & Automotive",region:"Mumbai",website:"greavescotton.com"},
+    ],
+    Global:[
+      {name:"Rivian",email:"suppliers@rivian.com",industry:"EV & Automotive",region:"USA",website:"rivian.com"},
+      {name:"Gogoro",email:"business@gogoro.com",industry:"EV & Automotive",region:"Taiwan",website:"gogoro.com"},
+      {name:"Arrival Ltd",email:"engineering@arrival.com",industry:"EV & Automotive",region:"UK",website:"arrival.com"},
+    ]
+  },
+  "Manufacturing":{
+    India:[
+      {name:"Bharat Forge",email:"info@bharatforge.com",industry:"Manufacturing",region:"Pune",website:"bharatforge.com"},
+      {name:"Thermax India",email:"contact@thermaxindia.com",industry:"Manufacturing",region:"Pune",website:"thermaxindia.com"},
+      {name:"Kirloskar Brothers",email:"info@kirloskar.com",industry:"Manufacturing",region:"Pune",website:"kirloskar.com"},
+      {name:"Godrej Appliances",email:"contact@godrej.com",industry:"Manufacturing",region:"Mumbai",website:"godrej.com"},
+      {name:"Kennametal India",email:"info@kennametal.com",industry:"Manufacturing",region:"Bangalore",website:"kennametal.com"},
+    ],
+    Global:[
+      {name:"Fictiv",email:"partners@fictiv.com",industry:"Manufacturing",region:"USA",website:"fictiv.com"},
+      {name:"Xometry",email:"info@xometry.com",industry:"Manufacturing",region:"USA",website:"xometry.com"},
+      {name:"Protolabs",email:"contact@protolabs.com",industry:"Manufacturing",region:"USA",website:"protolabs.com"},
+    ]
+  },
+  "Robotics & Automation":{
+    India:[
+      {name:"GreyOrange",email:"info@greyorange.com",industry:"Robotics",region:"Gurugram",website:"greyorange.com"},
+      {name:"Addverb Technologies",email:"contact@addverb.in",industry:"Robotics",region:"Noida",website:"addverb.in"},
+      {name:"Systemantics",email:"info@systemantics.com",industry:"Robotics",region:"Bangalore",website:"systemantics.com"},
+      {name:"Hi-Tech Robotic",email:"contact@hitechrobotic.com",industry:"Robotics",region:"Pune",website:"hitechrobotic.com"},
+    ],
+    Global:[
+      {name:"Agility Robotics",email:"info@agilityrobotics.com",industry:"Robotics",region:"USA",website:"agilityrobotics.com"},
+      {name:"Vention",email:"hello@vention.io",industry:"Robotics",region:"Canada",website:"vention.io"},
+    ]
+  },
+  "Electronics & IoT":{
+    India:[
+      {name:"Tata Elxsi",email:"info@tataelxsi.com",industry:"Electronics",region:"Bangalore",website:"tataelxsi.com"},
+      {name:"Smartron India",email:"hello@smartron.com",industry:"Electronics",region:"Hyderabad",website:"smartron.com"},
+      {name:"Wyld Networks",email:"contact@wyldnetworks.com",industry:"Electronics",region:"Bangalore",website:"wyldnetworks.com"},
+      {name:"Genus Power",email:"contact@genuspower.com",industry:"Electronics",region:"Jaipur",website:"genuspower.com"},
+    ],
+    Global:[
+      {name:"Particle Industries",email:"hello@particle.io",industry:"Electronics",region:"USA",website:"particle.io"},
+      {name:"Blues Wireless",email:"contact@blues.io",industry:"Electronics",region:"USA",website:"blues.io"},
+    ]
+  },
+  "Medical Devices":{
+    India:[
+      {name:"Trivitron Healthcare",email:"info@trivitron.com",industry:"Medical Devices",region:"Chennai",website:"trivitron.com"},
+      {name:"Forus Health",email:"info@forushealth.com",industry:"Medical Devices",region:"Bangalore",website:"forushealth.com"},
+      {name:"Innaccel",email:"hello@innaccel.com",industry:"Medical Devices",region:"Bangalore",website:"innaccel.com"},
+    ],
+    Global:[
+      {name:"Biobeat",email:"info@bio-beat.com",industry:"Medical Devices",region:"Israel",website:"bio-beat.com"},
+      {name:"Proprio",email:"contact@proprio.com",industry:"Medical Devices",region:"USA",website:"proprio.com"},
+    ]
+  },
+  "Aerospace & Defense":{
+    India:[
+      {name:"Ideaforge Technology",email:"info@ideaforge.com",industry:"Aerospace",region:"Mumbai",website:"ideaforge.com"},
+      {name:"Garuda Aerospace",email:"contact@garudaaerospace.com",industry:"Aerospace",region:"Chennai",website:"garudaaerospace.com"},
+      {name:"Throttle Aerospace",email:"hello@throttleaerospace.com",industry:"Aerospace",region:"Bangalore",website:"throttleaerospace.com"},
+    ],
+    Global:[
+      {name:"Joby Aviation",email:"info@jobyaviation.com",industry:"Aerospace",region:"USA",website:"jobyaviation.com"},
+      {name:"Lilium",email:"contact@lilium.com",industry:"Aerospace",region:"Germany",website:"lilium.com"},
+    ]
+  },
+  "Consumer Products":{
+    India:[
+      {name:"boAt Lifestyle",email:"b2b@boat-lifestyle.com",industry:"Consumer Products",region:"Delhi",website:"boat-lifestyle.com"},
+      {name:"Atomberg Technologies",email:"info@atomberg.com",industry:"Consumer Products",region:"Mumbai",website:"atomberg.com"},
+      {name:"Ultrahuman",email:"hello@ultrahuman.com",industry:"Consumer Products",region:"Bangalore",website:"ultrahuman.com"},
+      {name:"Noise",email:"contact@gonoise.com",industry:"Consumer Products",region:"Gurugram",website:"gonoise.com"},
+    ],
+    Global:[
+      {name:"Nothing Technology",email:"partnerships@nothing.tech",industry:"Consumer Products",region:"UK",website:"nothing.tech"},
+      {name:"Peak Design",email:"info@peakdesign.com",industry:"Consumer Products",region:"USA",website:"peakdesign.com"},
+    ]
+  },
+  "Startups & R&D":{
+    India:[
+      {name:"Dozee Health",email:"contact@dozee.io",industry:"Startups",region:"Bangalore",website:"dozee.io"},
+      {name:"Chakr Innovation",email:"info@chakr.in",industry:"Startups",region:"Delhi",website:"chakr.in"},
+      {name:"Detect Technologies",email:"contact@detect.com",industry:"Startups",region:"Chennai",website:"detect.com"},
+      {name:"Silvan Innovation",email:"hello@silvaninnovation.com",industry:"Startups",region:"Pune",website:"silvaninnovation.com"},
+    ],
+    Global:[
+      {name:"Hadrian",email:"info@hadrian.co",industry:"Startups",region:"USA",website:"hadrian.co"},
+      {name:"Varda Space",email:"contact@varda.space",industry:"Startups",region:"USA",website:"varda.space"},
+    ]
+  }
+};
+
+// ── MAIN SEARCH ───────────────────────────────────────────────────────────────
+async function doSearch(){
+  const q   = document.getElementById('s-q').value.trim();
+  const ind = document.getElementById('s-ind').value;
+  const reg = document.getElementById('s-reg').value;
+  const cnt = parseInt(document.getElementById('s-cnt').value);
+  if(!q && !ind){toast('Enter a search query or select an industry','err');return;}
+
+  document.getElementById('s-loading').style.display='block';
+  document.getElementById('s-results').style.display='none';
+
+  let prog=0;
+  const bar=document.getElementById('s-bar');
+  const msgs=['Querying Google...','Scanning results...','Extracting company info...','Building contact list...','Done!'];
+  let mi=0;
+  const iv=setInterval(()=>{prog=Math.min(prog+16,90);bar.style.width=prog+'%';if(mi<msgs.length)document.getElementById('s-msg').textContent=msgs[mi++];},500);
+
+  let results=[], src='📦 Built-in Database';
+
+  // ── Google Custom Search API ──
+  if(cfg.gkey && cfg.gcx){
+    try{
+      // Run 2 queries for better coverage
+      const queries=[
+        `${q||ind} company ${reg} engineering CAD product design contact email`,
+        `${ind||q} startup manufacturer ${reg} mechanical design services`
+      ];
+      for(const sq of queries){
+        const url=`https://www.googleapis.com/customsearch/v1?key=${cfg.gkey}&cx=${cfg.gcx}&q=${encodeURIComponent(sq)}&num=10`;
+        const r=await fetch(url);
+        const d=await r.json();
+        if(d.error){toast('Google API Error: '+d.error.message,'err');break;}
+        if(d.items){
+          d.items.forEach(item=>{
+            const dom=item.link?item.link.replace(/https?:\/\/(www\.)?/,'').split('/')[0]:'';
+            const rawName=item.title||'';
+            const name=rawName.split(/[-|–|:]/)[0].trim().substring(0,50);
+            if(dom && name.length>2 && !results.find(x=>x.website===dom)){
+              results.push({
+                name,
+                email: guessEmail(dom, item.snippet||''),
+                industry: ind || guessIndustry(rawName+' '+(item.snippet||'')),
+                region: reg,
+                website: dom,
+                snippet: item.snippet?item.snippet.substring(0,100):''
+              });
+            }
+          });
+        }
+        await new Promise(r=>setTimeout(r,300)); // small delay between calls
+      }
+      if(results.length>0) src='🌐 Google Custom Search (Live)';
+    }catch(e){ results=[]; }
+  }
+
+  // ── Fallback: Built-in DB ──
+  if(results.length < 5){
+    const all=[];
+    const add=pool=>{if(pool)pool.forEach(c=>{if(!all.find(x=>x.email===c.email))all.push(c);});};
+    if(ind && DB[ind]){
+      add(DB[ind][reg]); add(DB[ind]['India']); add(DB[ind]['Global']);
+    } else {
+      Object.values(DB).forEach(d=>{add(d[reg]);add(d['India']);add(d['Global']);});
+    }
+    if(q){
+      const ql=q.toLowerCase();
+      const filt=all.filter(c=>
+        c.name.toLowerCase().includes(ql)||
+        c.industry.toLowerCase().includes(ql)||
+        c.region.toLowerCase().includes(ql)
+      );
+      results=[...(filt.length>=3?filt:all),...results];
+    } else results=[...all,...results];
+    if(src==='📦 Built-in Database') src='📦 Built-in Database';
+  }
+
+  // Dedupe & shuffle & limit
+  const seen=new Set();
+  results=results.filter(c=>{
+    const k=(c.email||c.website||'').toLowerCase();
+    if(seen.has(k))return false; seen.add(k); return true;
+  }).sort(()=>Math.random()-.5).slice(0,cnt);
+
+  clearInterval(iv); bar.style.width='100%';
+  found=results;
+
+  const badge=document.getElementById('s-src-badge');
+  badge.textContent=src;
+  badge.className='badge '+(src.includes('Google')?'b-live':'b-db');
+
+  renderFound();
+  document.getElementById('s-loading').style.display='none';
+  document.getElementById('s-results').style.display='block';
+  document.getElementById('s-found').textContent=`(${found.length} companies found)`;
+  toast(`Found ${found.length} companies via ${src}!`);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function guessEmail(domain, snippet){
+  const s=snippet.toLowerCase();
+  // try to extract email from snippet
+  const m=snippet.match(/[\w.-]+@[\w.-]+\.\w+/);
+  if(m) return m[0];
+  const pre=s.includes('contact')?'contact':s.includes('info')?'info':s.includes('hello')?'hello':'info';
+  return pre+'@'+domain;
+}
+
+function guessIndustry(text){
+  const t=text.toLowerCase();
+  if(t.includes('ev ')||t.includes('electric vehicle')||t.includes('automotive'))return'EV & Automotive';
+  if(t.includes('robot')||t.includes('automat'))return'Robotics & Automation';
+  if(t.includes('medical')||t.includes('health')||t.includes('biotech'))return'Medical Devices';
+  if(t.includes('aerospace')||t.includes('drone')||t.includes('uav'))return'Aerospace & Defense';
+  if(t.includes('electron')||t.includes('iot')||t.includes('pcb'))return'Electronics & IoT';
+  if(t.includes('consumer')||t.includes('product'))return'Consumer Products';
+  if(t.includes('manufactur')||t.includes('industrial'))return'Manufacturing';
+  return'Startups & R&D';
+}
+
+function renderFound(){
+  document.getElementById('s-table').innerHTML = found.map((c,i)=>`
+    <tr>
+      <td><input type="checkbox" class="fc" data-i="${i}" checked/></td>
+      <td><b>${esc(c.name)}</b><br><span style="font-size:11px;color:var(--muted)">${esc(c.snippet||'')}</span></td>
+      <td style="color:#60a5fa;font-size:12px">${esc(c.email)}</td>
+      <td><span class="badge b-db" style="font-size:10px">${esc(c.industry)}</span></td>
+      <td style="font-size:12px;color:var(--muted)">${esc(c.region)}</td>
+      <td><a href="https://${c.website}" target="_blank" style="color:#60a5fa;font-size:12px">${esc(c.website)}</a></td>
+    </tr>`).join('');
+}
+
+function toggleAll(c){document.querySelectorAll('.fc').forEach(x=>x.checked=c.checked);}
+function selAll(){document.querySelectorAll('.fc').forEach(x=>x.checked=true);document.getElementById('chk-all').checked=true;}
+function getSel(){return[...document.querySelectorAll('.fc:checked')].map(x=>found[+x.dataset.i]);}
+
+// ── SEND TO SHEET ─────────────────────────────────────────────────────────────
+async function sendToSheet(){
+  const sel=getSel();
+  if(!sel.length){toast('Select at least one company','err');return;}
+  if(!cfg.url){toast('Add Apps Script URL in ⚙️ Setup first','err');return;}
+  toast('Sending to Google Sheet...');
+  let ok=0;
+  for(const c of sel){
+    try{
+      await fetch(cfg.url,{
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'addRow',company:c.name,email:c.email,industry:c.industry,status:'Pending'})
+      });
+      ok++;
+    }catch(e){}
+    if(!contacts.find(x=>x.email===c.email))
+      contacts.push({id:Date.now()+Math.random(),name:c.name,email:c.email,industry:c.industry,status:'Pending'});
+  }
+  save(); renderContacts();
+  toast(`✅ ${ok} companies sent to Google Sheet!`);
+}
+
+async function pushPending(){
+  if(!cfg.url){toast('Add Apps Script URL in ⚙️ Setup','err');return;}
+  const p=contacts.filter(c=>c.status==='Pending');
+  if(!p.length){toast('No pending contacts','err');return;}
+  for(const c of p){
+    try{
+      await fetch(cfg.url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'addRow',company:c.name,email:c.email,industry:c.industry,status:'Pending'})});
+    }catch(e){}
+  }
+  toast(`Pushed ${p.length} contacts to Sheet!`);
+}
+
+function addToDash(){
+  const sel=getSel();
+  if(!sel.length){toast('Select companies first','err');return;}
+  let n=0;
+  sel.forEach(c=>{
+    if(!contacts.find(x=>x.email===c.email)){
+      contacts.push({id:Date.now()+Math.random(),name:c.name,email:c.email,industry:c.industry,status:'Pending'});
+      n++;
+    }
+  });
+  save(); renderContacts(); toast(`Added ${n} contacts!`);
+}
+
+// ── CONTACTS ──────────────────────────────────────────────────────────────────
+function addManual(){
+  const n=document.getElementById('c-n').value.trim();
+  const e=document.getElementById('c-e').value.trim();
+  const i=document.getElementById('c-i').value.trim();
+  if(!n||!e){toast('Name and email required','err');return;}
+  contacts.push({id:Date.now(),name:n,email:e,industry:i,status:'Pending'});
+  save(); renderContacts();
+  ['c-n','c-e','c-i'].forEach(id=>document.getElementById(id).value='');
+  toast('Contact added!');
+}
+
+function delContact(id){contacts=contacts.filter(c=>c.id!==id);save();renderContacts();}
+function markStatus(id,s){const c=contacts.find(x=>x.id===id);if(c){c.status=s;save();renderContacts();}}
+
+function renderContacts(){
+  const tb=document.getElementById('c-table');
+  if(!contacts.length){tb.innerHTML='<tr><td colspan="5" class="empty">No contacts yet.</td></tr>';updateStats();return;}
+  tb.innerHTML=contacts.map(c=>`
+    <tr>
+      <td><b>${esc(c.name)}</b></td>
+      <td style="color:#60a5fa;font-size:12px">${esc(c.email)}</td>
+      <td style="font-size:12px">${esc(c.industry||'—')}</td>
+      <td><span class="badge b-${c.status==='Sent'?'sent':c.status==='Failed'?'failed':'pending'}">${c.status}</span></td>
+      <td style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="markStatus(${c.id},'Sent')">✅</button>
+        <button class="btn btn-outline btn-sm" onclick="markStatus(${c.id},'Pending')">🔄</button>
+        <button class="btn btn-red btn-sm" onclick="delContact(${c.id})">🗑️</button>
+      </td>
+    </tr>`).join('');
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById('st-t').textContent=contacts.length;
+  document.getElementById('st-s').textContent=contacts.filter(c=>c.status==='Sent').length;
+  document.getElementById('st-p').textContent=contacts.filter(c=>c.status==='Pending').length;
+  document.getElementById('st-f').textContent=contacts.filter(c=>c.status==='Failed').length;
+}
+
+function exportCSV(){
+  if(!contacts.length){toast('No contacts','err');return;}
+  const rows=[['Company Name','Email','Industry','Status'],...contacts.map(c=>[c.name,c.email,c.industry,c.status])];
+  const csv=rows.map(r=>r.map(x=>`"${(x||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='tejom_contacts.csv'; a.click();
+  toast('CSV downloaded!');
+}
+
+// ── TEMPLATE ──────────────────────────────────────────────────────────────────
+function saveTpl(){
+  tpl={sub:document.getElementById('t-sub').value,body:document.getElementById('t-body').value};
+  localStorage.setItem('tj4_t',JSON.stringify(tpl));
+  buildScript(); toast('Saved!');
+}
+function previewTpl(){
+  const s=document.getElementById('t-sub').value.replace(/{{company}}/g,'<b style="color:#60a5fa">Acme Corp</b>');
+  const b=document.getElementById('t-body').value.replace(/{{company}}/g,'<b style="color:#60a5fa">Acme Corp</b>').replace(/\n/g,'<br>');
+  document.getElementById('prev-body').innerHTML=`<b>Subject:</b> ${s}<hr style="border-color:#30363d;margin:10px 0"/>${b}`;
+  document.getElementById('prev-card').style.display='block';
+}
+function resetTpl(){document.getElementById('t-sub').value=DSUB;document.getElementById('t-body').value=DBODY;toast('Reset!');}
+
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+function saveCfg(){
+  cfg={
+    gkey: document.getElementById('cfg-gkey').value.trim(),
+    gcx:  document.getElementById('cfg-gcx').value.trim(),
+    url:  document.getElementById('cfg-url').value.trim()
+  };
+  localStorage.setItem('tj4_cfg',JSON.stringify(cfg));
+  updateApiBar(); buildScript(); toast('Config saved!');
+}
+
+async function testSheet(){
+  if(!cfg.url){toast('Enter Web App URL first','err');return;}
+  try{
+    await fetch(cfg.url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'test'})});
+    toast('✅ Sheet connection looks good!');
+  }catch(e){toast('❌ Connection failed. Check your URL.','err');}
+}
+
+async function testGoogle(){
+  if(!cfg.gkey||!cfg.gcx){toast('Enter both Google API Key and Search Engine ID first','err');return;}
+  try{
+    const url=`https://www.googleapis.com/customsearch/v1?key=${cfg.gkey}&cx=${cfg.gcx}&q=engineering+company+india&num=1`;
+    const r=await fetch(url);
+    const d=await r.json();
+    if(d.error) toast('❌ Google API Error: '+d.error.message,'err');
+    else toast('✅ Google Search API working! Ready to search.');
+  }catch(e){toast('❌ Google API test failed','err');}
+}
+
+// ── APPS SCRIPT ───────────────────────────────────────────────────────────────
+function buildScript(){
+  const sub=(tpl?.sub||DSUB).replace(/`/g,"'");
+  const body=(tpl?.body||DBODY).replace(/`/g,"'");
+  document.getElementById('script-box').textContent=
+`// TEJOM DESIGNS — Google Apps Script
+// Extensions > Apps Script > Paste > Save > Deploy as Web App
+
+const CONFIG = {
+  SHEET_NAME: "Sheet1",   // ← Change to your sheet tab name
+  SENDER_NAME: "Tejom Designs",
+  REPLY_TO: "tejomdesign@gmail.com"
+};
+
+// Receives companies from website → adds to sheet automatically
+function doPost(e) {
+  try {
+    const d = JSON.parse(e.postData.contents);
+    if (d.action === 'addRow') {
+      const sheet = SpreadsheetApp.getActiveSpreadsheet()
+                      .getSheetByName(CONFIG.SHEET_NAME);
+      const lastRow = sheet.getLastRow();
+      const emails = lastRow > 1
+        ? sheet.getRange(2, 2, lastRow - 1, 1).getValues().flat()
+        : [];
+      if (!emails.includes(d.email)) {
+        sheet.appendRow([d.company, d.email, d.industry, d.status || 'Pending']);
+      }
+    }
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', msg: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Sends emails to all Pending rows
+function sendOutreachEmails() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet()
+                  .getSheetByName(CONFIG.SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  let sent = 0, failed = 0;
+
+  for (let i = 1; i < data.length; i++) {
+    const company = data[i][0];
+    const email   = data[i][1];
+    const status  = data[i][3];
+    if (!email || status === "✅ Sent") continue;
+
+    const subject = \`${sub}\`.replace(/{{company}}/g, company);
+    const body    = \`${body}\`.replace(/{{company}}/g, company);
+
+    try {
+      GmailApp.sendEmail(email, subject, body, {
+        name: CONFIG.SENDER_NAME,
+        replyTo: CONFIG.REPLY_TO
+      });
+      sheet.getRange(i + 1, 4).setValue("✅ Sent");
+      sent++;
+      Utilities.sleep(1500);
+    } catch(err) {
+      sheet.getRange(i + 1, 4).setValue("❌ Failed");
+      failed++;
+    }
+  }
+  SpreadsheetApp.getUi().alert(
+    "Done! ✅ Sent: " + sent + " | ❌ Failed: " + failed
+  );
+}
+
+// Run this once to set up daily auto-send at 9am
+function createTrigger() {
+  ScriptApp.newTrigger("sendOutreachEmails")
+    .timeBased().everyDays(1).atHour(9).create();
+}`;
+}
+
+function copyScript(){
+  navigator.clipboard.writeText(document.getElementById('script-box').textContent);
+  toast('Script copied!');
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function save(){ localStorage.setItem('tj4_c', JSON.stringify(contacts)); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(msg, t=''){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=t; el.style.display='block';
+  setTimeout(()=>el.style.display='none', 3000);
+}
+</script>
+</body>
+</html>
